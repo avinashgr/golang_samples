@@ -1,0 +1,82 @@
+<html>
+
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="/assets/css/styles.css" type="text/css" rel="stylesheet" media="screen,projection" />
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+    <!--JavaScript at end of body for optimized loading-->
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <div class="container" style="background-color: rgb(250, 212, 43)">
+        <div class="section">
+
+            <!--   Icon Section   -->
+            <div class="row">
+                <form class="col s12 m4" action="{{.logouturl}}" method="get">
+                    <input type="hidden" name="post_logout_redirect_uri" value="{{.post_logout_url}}"/>
+                    <input type="hidden" id="id_token" name="id_token_hint" value=""/>
+                    <input type="hidden" id="client_id" name="client_id" value="{{.client_id}}"/>
+
+                    <div class="card lime lighten-2 large">
+                        <div class="card-content blue-grey-text">
+                            <h6 class="center">Code and State</h5>
+                            <div class="row">
+                                <b>code:</b>
+                                <div class="scroll" style="height:20px">
+                                    {{.interaction_code}}
+                                </div>
+                                <b>state:</b>
+                                <div class="scroll" style="height:20px">
+                                    {{.state}}
+                                </div>
+                                <b>Id Token:</b>
+                                <div class="scroll" id="id_token_div"></div>
+                                <b>access token:</b>
+                                <div class="scroll" id="access_token"></div>
+                                <input type="hidden" name="code" value="{{.interaction_code}}" />
+                                <input type="hidden" name="state" value="{{.state}}" />
+                            </div>
+                            <div class="center">
+                                <button id="get-token-button" class="center btn waves-effect waves-light green">Logout</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="col s12 m8">
+                    <h5 class="center black-text">Interaction Code Flow</h5>
+
+                    <p class="light black-text">The Authorization Server has returned a interaction code: {{.interaction_code}} and the state as
+                        {{.state}}</p>
+                    <p class="light black-text">A session has been created on the tenant. Click <a href="{{.domain}}" target="_blank" rel="noopener noreferrer"> your Okta tenant</a> to verify </p>
+                    
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <script>
+        var tokens = window.localStorage.getItem('okta-token-storage');
+        tokens = JSON.parse(tokens);
+        console.log("the idtoken is "+tokens);
+        const idToken = tokens.idToken.idToken;
+        const access_token =tokens.accessToken.accessToken;
+        document.getElementById("id_token_div").innerHTML = idToken;
+        document.getElementById("id_token").value = idToken;
+
+        document.getElementById("access_token").innerHTML = access_token;
+        document.getElementById("logout").style.display = 'block';
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+<html>
+
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="/assets/css/styles.css" type="text/css" rel="stylesheet" media="screen,projection" />
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+</head>
+
+<body>
+    <!--JavaScript at end of body for optimized loading-->
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <div class="container" style="background-color: rgb(250, 212, 43)">
+        <div class="section">
+
+            <!--   Icon Section   -->
+            <div class="row">
+                <form class="col s12 m4" action="{{.userinfourl}}" method="post">
+                    <div class="card lime lighten-2 large" style="height: 600">
+                        <div class="card-content blue-grey-text">
+                            <h6 class="center">ID Token, Access Token and ID Info</h5>
+                            <div class="row">
+                                <b>id_token:</b>
+                                <div class="scroll">
+                                    {{.id_token}}
+                                </div>
+                                <b>access_token:</b>
+                                <div class="scroll">
+                                    {{.access_token}}
+                                </div>
+                                <b>information from ID Token:</b>
+                                <div class="scroll">
+                                    {{.info_from_ID}}
+                                </div>
+                                <input type="hidden" name="access_token" value="{{.access_token}}" />
+                                <input type="hidden" name="id_token" value="{{.id_token}}" />
+                            </div>
+                            <div class="center">
+                                <button id="login-button" class="center btn waves-effect waves-light green">Get User
+                                    Info (Step 6)</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="col s12 m8">
+                    <h5 class="center black-text">OIDC Flow: Step 5</h5>
+
+                    <p class="light black-text">The server request to the token endpoint returns the access and ID token. 
+                        The ID token contains the header, payload and signature. The payload contains the user information.
+                    </p>
+<pre>
+    AuthN Request on server side:
+    form POST to {{.token_url}} with following params:
+    code : {{index .data "code"}}
+    client_id: {{index .data "client_id"}}
+    client_secret: {{index .data "client_secret"}}
+    scope: {{index .data "scope"}}
+    redirect_uri: {{index .data "redirect_uri"}}
+    +--------+                                                  +--------+
+    |        |                                                  |        |
+    |        |---------(1) AuthN Request-----------------------&gt;|        |
+    |        |                                                  |        |
+    |        |  +--------+                                      |        |
+    |        |  |        |                                      |        |
+    |        |  |  End-  |&lt;--(2) AuthN & AuthZ-----------------&gt;|        |
+    |        |  |  User  |                                      |        |
+    |   RP   |  |        |                                      |   OP   |
+    |        |  +--------+                                      |        |
+    |        |                                                  |        |
+    |        |&lt;--------(3) AuthN Resp (code)--------------------|        |
+    |        |                                                  |        | 
+    |        |---------(4) AuthN Req  (code)-------------------&gt;|        |
+    |        |                                                  |        |
+    |        |&lt;--------(5) AuthN Resp (id,access tokens)--------|        |
+    |        |                                                  |        | 
+    |        |---------(6) UserInfo Request--(access token)----&gt;|        |
+    |        |                                                  |        |
+    |        |&lt;--------(7) UserInfo Response--------------------|        |
+    |        |                                                  |        |
+    +--------+                                                  +--------+
+    </pre>
+                                        
+                    </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

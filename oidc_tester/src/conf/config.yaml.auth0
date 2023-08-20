@@ -1,0 +1,18 @@
+OIDCConfigs:
+  client_id: "jDcsQbXGOU7Wnw0eOk2GhYbOzwvTVOm2"
+  client_secret: "9pD3SMD3MWR6Uf_nKuI16S0NjwxsMmv9AxfL3LyD9dbu0z3GYup4f__-TfPuvdRq"
+  authserver_domain: "https://avinashgr.us.auth0.com"
+  scope: "profile email openid"
+  grant_type: "authorization_code"
+  authorize_url: "/authorize"
+  token_url: "/oauth/token"
+  logout_url: "/oidc/logout"
+  oidc_info: "/.well-known/openid-configuration"
+APIEndPointConfigs:
+  api_domain: "bobby"
+  userinfo_url: "/userinfo"
+AppConfigs:
+  port: 9000
+  appUrl: "http://localhost"
+  logout_url: "/landing"
+  host: "0.0.0.0"

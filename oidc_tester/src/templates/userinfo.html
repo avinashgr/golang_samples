@@ -1,0 +1,83 @@
+<html>
+
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="/assets/css/styles.css" type="text/css" rel="stylesheet" media="screen,projection" />
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+    <!--JavaScript at end of body for optimized loading-->
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <div class="container" style="background-color: rgb(250, 212, 43)">
+        <div class="section">
+
+            <!--   Icon Section   -->
+            <div class="row">
+                <form class="col s12 m4" action="{{.logouturl}}" method="get">
+                    <input type="hidden" name="id_token_hint" value="{{.id_token_hint}}"/>
+                    <input type="hidden" name="post_logout_redirect_uri" value="{{.callback_url}}"/>
+                    <div class="card lime lighten-2 large">
+                        <div class="card-content blue-grey-text">
+                            <h6 class="center">User info</h5>
+                            <div class="row">
+                                <b>User Info:</b>
+                                <div class="scroll">
+                                    {{.userinfo}}
+                                </div>
+                            </div>
+                            <div class="center">
+                                <button id="login-button" class="center btn waves-effect waves-light green">Logout User</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="col s12 m8">
+                    <h5 class="center black-text">OIDC Flow: Step 7</h5>
+
+                    <p class="light black-text">The Authorization Server has returned the user information for the user logged in. 
+                        To logout the user and redirect to landing page. The url would be {{.logouturl}} with the id_token and post_logout_redirect_uri</p>
+    <pre>
+        (7) UserInfo Response-----
+
+        +--------+                                                  +--------+
+        |        |                                                  |        |
+        |        |---------(1) AuthN Request-----------------------&gt;|        |
+        |        |                                                  |        |
+        |        |  +--------+                                      |        |
+        |        |  |        |                                      |        |
+        |        |  |  End-  |&lt;--(2) AuthN & AuthZ-----------------&gt;|        |
+        |        |  |  User  |                                      |        |
+        |   RP   |  |        |                                      |   OP   |
+        |        |  +--------+                                      |        |
+        |        |                                                  |        |
+        |        |&lt;--------(3) AuthN Resp (code)--------------------|        |
+        |        |                                                  |        | 
+        |        |---------(4) AuthN Req  (code)-------------------&gt;|        |
+        |        |                                                  |        |
+        |        |&lt;--------(5) AuthN Resp (id,access tokens)--------|        |
+        |        |                                                  |        | 
+        |        |---------(6) UserInfo Request--(access token)----&gt;|        |
+        |        |                                                  |        |
+        |        |&lt;--------(7) UserInfo Response--------------------|        |
+        |        |                                                  |        |
+        +--------+                                                  +--------+
+        </pre>
+                    
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

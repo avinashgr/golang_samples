@@ -1,0 +1,104 @@
+<html>
+
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="/assets/css/styles.css" type="text/css" rel="stylesheet" media="screen,projection" />
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+</head>
+
+<body>
+    <!--JavaScript at end of body for optimized loading-->
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- <nav class="white" role="navigation">
+        <div class="nav-wrapper container">
+            <a id="logo-container" href="#" class="brand-logo">Logo</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="#">Navbar Link</a></li>
+            </ul>
+
+            <ul id="nav-mobile" class="sidenav" style="transform: translateX(-105%);">
+                <li><a href="#">Navbar Link</a></li>
+            </ul>
+            <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        </div>
+    </nav> -->
+    <div class="container" style="background-color: rgb(250, 212, 43)">
+        <div class="section">
+
+            <!--   Icon Section   -->
+            <div class="row">
+                <form class="col s12 m4" action="{{.loginurl}}">
+                    <input type="hidden" name="redirect_uri" value="{{.redirect_uri}}" />
+                    <input type="hidden" name="response_type" value="{{.response_type}}" />
+                    <input type="hidden" name="client_id" value="{{.client_id}}" />
+                    <input type="hidden" name="scope" value="{{.scope}}" />
+                    <input type="hidden" name="state" value="{{.client_id}}" />
+                    <div class="card lime lighten-2 large">
+                        <div class="card-content blue-grey-text">
+                            <h6 class="center">Login</h6>
+                            <div class="row">
+                                <div class="col s8">
+                                    username: <input placeholder="Placeholder" id="username" type="text" name="login_hint"
+                                        class="validate">
+                                </div>
+                            </div>
+                            <div class="center">
+                                <button id="login-button"
+                                    class="center btn waves-effect waves-light green">login</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="col s12 m8">
+                    <h5 class="center black-text">OIDC Flow: Step 1</h5>
+
+                    <p class="light black-text">The login starts with the click of the Login button. Step 1 redirection
+                        to Authentication provider authorize endpoint at {{.loginurl}} with client id: {{.client_id}}</p>
+                    <p class="ligh black-text">More information can be found <a href="{{.oidc_info_url}}" target="_blank" rel="noopener noreferrer">OIDC configs here</a></p>
+    <pre>
+        AuthN Request-----{{.loginurl}}
+        Query Params:
+        redirect_uri------{{.redirect_uri}}
+        response_type-----{{.response_type}}
+        client_id---------{{.client_id}}
+        scope-------------{{.scope}}
+        state-------------{{.client_id}}
+        +--------+                                                  +--------+
+        |        |                                                  |        |
+        |        |---------(1) AuthN Request-----------------------&gt;|        |
+        |        |                                                  |        |
+        |        |  +--------+                                      |        |
+        |        |  |        |                                      |        |
+        |        |  |  End-  |&lt;--(2) AuthN & AuthZ-----------------&gt;|        |
+        |        |  |  User  |                                      |        |
+        |   RP   |  |        |                                      |   OP   |
+        |        |  +--------+                                      |        |
+        |        |                                                  |        |
+        |        |&lt;--------(3) AuthN Resp (code)--------------------|        |
+        |        |                                                  |        | 
+        |        |---------(4) AuthN Req  (code)-------------------&gt;|        |
+        |        |                                                  |        |
+        |        |&lt;--------(5) AuthN Resp (id,access tokens)--------|        |
+        |        |                                                  |        | 
+        |        |---------(6) UserInfo Request--(access token)----&gt;|        |
+        |        |                                                  |        |
+        |        |&lt;--------(7) UserInfo Response--------------------|        |
+        |        |                                                  |        |
+        +--------+                                                  +--------+
+        </pre>
+
+                </div>
+
+            </div>
+        </div>
+
+</body>
+
+</html>

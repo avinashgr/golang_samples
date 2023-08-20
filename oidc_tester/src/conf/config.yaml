@@ -1,0 +1,23 @@
+OIDCConfigs:
+  client_id: "0oa8bqdppnxWCfQHR1d7"
+  client_secret: "gE3g70GUDTDTtlfAR23ZPY7MZozJA9Q0HCLDeD3n"
+  authserver_domain: "https://labs.avisportal.com"
+  scope: "profile email openid"
+  grant_type: "authorization_code"
+  authorize_url: "/oauth2/v1/authorize"
+  token_url: "/oauth2/v1/token"
+  logout_url: "/oauth2/v1/logout"
+  oidc_info: "/oauth2/default/.well-known/openid-configuration"
+APIEndPointConfigs:
+  api_domain: "bobby"
+  userinfo_url: "/oauth2/v1/userinfo"
+AppConfigs:
+  port: 8000
+  appUrl: "http://localhost"
+  logout_url: "/landing"
+  host: "0.0.0.0"
+CustomWidgetConfigs:
+  widgetversion: "7.6.1"
+  client_id: "0oa8cyhs7a5r1KOQO1d7"
+  redirect_url: "http://localhost:8000/applanding"
+  post_logout_url: "/login"

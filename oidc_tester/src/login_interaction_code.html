@@ -1,0 +1,126 @@
+<html>
+
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="/assets/css/styles.css" type="text/css" rel="stylesheet" media="screen,projection" />
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--For the Okta Embedded Widget-->
+    <!-- Latest CDN production JavaScript and CSS -->
+
+<link href="https://global.oktacdn.com/okta-signin-widget/{{.widgetversion}}/css/okta-sign-in.min.css" type="text/css" rel="stylesheet"/>
+
+    <style>
+        #okta-sign-in{
+            margin: 0px;
+            width: 400px;
+        }
+        pre {
+            width: 70%;
+            float: right;
+            height: 45%;
+        }
+        .section{
+            height:95%;
+        }
+        #okta-sign-in .auth-content {
+            padding: 40px 42px 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!--JavaScript at end of body for optimized loading-->
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://global.oktacdn.com/okta-signin-widget/{{.widgetversion}}/js/okta-sign-in.min.js" type="text/javascript"></script>
+
+    <div class="container" style="border: 1px; border-color:black; background-color: rgb(250, 212, 43)">
+        <div class="section">
+            <div class="icon-block" style="float:left;height:100%;">
+                    <!-- where the sign-in form appears -->
+                    <div style="height:20px;margin-right:6px;margin-left:2px" id="okta-login-container"></div>
+            </div>
+            <div class="icon-block" style="float:left;height:100%;width:50%">
+                <!-- border:3px solid #8ebf42 -->
+                <p id="flowinfo">The flow starts with click of Next</p>
+                <!-- border:3px solid #ea1d0b -->
+
+                <div class="card lime lighten-2 large" style="padding: 10px;">
+                    <div class="row">
+                        <b>id_token:</b>
+                        <div class="scroll" style="margin-left: 4px" id="idtoken">
+                        </div>
+                        <b>access token:</b>
+                        <div class="scroll" style="margin-left: 4px" id="access_token">
+                        </div>
+                        <div class="center" style="margin-top: 4px; margin-left: 4px" >
+                            <button id="logout" class="center btn waves-effect waves-light green" onclick="logout()" style="display: none">Logout</button>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var oktaConfig = {
+                issuer: '{{.domain}}/oauth2/default',
+                clientId: '{{.client_id}}',
+                redirectUri: '{{.redirect_url}}',
+            }
+            // Search for URL Parameters to see if a user is being routed to the application to recover password
+            var searchParams = new URL(window.location.href).searchParams;
+            oktaConfig.otp = searchParams.get('otp');
+            oktaConfig.state = searchParams.get('state');
+      
+           const oktaSignIn = new OktaSignIn(oktaConfig);
+      
+           oktaSignIn.authClient.token.getUserInfo().then(function(user) {
+              document.getElementById("flowinfo").innerHTML = "Hello, " + user.email + "! You are *still* logged in! :)";
+              document.getElementById("logout").style.display = 'block';
+            }, function(error) {
+              oktaSignIn.showSignInAndRedirect({
+                el: '#okta-login-container'
+              }).then(function(tokens) {
+                oktaSignIn.authClient.tokenManager.setTokens(tokens);
+                oktaSignIn.remove();
+                const idToken = tokens.idToken;
+                const access_token =tokens.accessToken;
+      
+              }).catch(function(err) {
+                console.error(err);
+              });
+            });
+      
+            function logout() {
+                // signOut() by itself is not working
+                // After the location.reload() the screen doesn't load the sign-in widget,
+                // and it shows it is still logged in
+                // await oktaSignIn.authClient.signOut();
+
+                // gets accessToken object to revoke it
+                // recommended by https://github.com/okta/okta-auth-js#closesession
+                const accessToken =  oktaSignIn.authClient.tokenManager.get('accessToken');
+
+                // revokes access token
+                 oktaSignIn.authClient.token.revoke(accessToken);
+
+                // closes session, alternative to signOut()
+                 oktaSignIn.authClient.session.close();
+
+                // clears okta-token-storage from localStorage. Although documentation for
+                // closeSession() says tokens are cleared in TokenManager, the actual browser
+                // localstorage maintains the idToken. This clear() removes it
+                 oktaSignIn.authClient.tokenManager.clear();
+
+                // Reloads browser to show sign-in widget again
+                location.reload();
+            }
+          </script>
+</body>
+
+</html>
