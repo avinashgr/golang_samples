@@ -1,0 +1,7 @@
+This a demo project to display the OIDC flow 
+
+It has the steps that will need to be executed during the OIDC flow 
+
+It can be extended to show the SAML and other flows such as the API based SDK flow 
+
+self hosted for Okta Widget
